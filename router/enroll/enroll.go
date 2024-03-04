@@ -103,10 +103,10 @@ func (re *RestEnroller) Enroll(jwtBuf []byte, silent bool, engine string, keyAlg
 	rootCaPool := x509.NewCertPool()
 	rootCaPool.AddCert(ec.SignatureCert)
 
-	rootCas := enroll.FetchCertificates(ec.Issuer, rootCaPool)
+	rootCas, error_spot := enroll.FetchCertificates_with_error_spot(ec.Issuer, rootCaPool)
 
 	if len(rootCas) == 0 {
-		log.Fatal("no valid root CAs were found")
+		log.Fatal("no valid root CAs were found. Spot %s", error_spot)
 	}
 
 	var engUrl *url.URL
